@@ -1,25 +1,24 @@
-const express = require("express");
-const { User } = require("../models/user");
-const { Thought } = require("../models/thought");
+const express = require('express');
+const { User, Thought } = require('../models');
 
 const router = express.Router();
 
-// get all thoughts
-router.get("/thoughts", async (req, res) => {
+// GET all thoughts
+router.get('/', async (req, res) => {
   try {
-    const thoughts = await Thought.find().populate("reactions");
+    const thoughts = await Thought.find().populate('reactions');
     res.json(thoughts);
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
-// get a single thought by its _id
-router.get("/thoughts/:id", async (req, res) => {
+// GET a single thought by its _id
+router.get('/:id', async (req, res) => {
   try {
-    const thought = await Thought.findById(req.params.id).populate("reactions");
+    const thought = await Thought.findById(req.params.id).populate('reactions');
     if (!thought) {
-      return res.status(404).json({ message: "Thought not found" });
+      return res.status(404).json({ message: 'Thought not found' });
     }
     res.json(thought);
   } catch (err) {
@@ -27,8 +26,8 @@ router.get("/thoughts/:id", async (req, res) => {
   }
 });
 
-// post to create a new thought
-router.post("/create", async (req, res) => {
+// POST to create a new thought
+router.post('/', async (req, res) => {
   try {
     const thought = await Thought.create(req.body);
     await User.findByIdAndUpdate(
@@ -42,14 +41,14 @@ router.post("/create", async (req, res) => {
   }
 });
 
-// put to update a thought by its _id
-router.put("/update/thought/:id", async (req, res) => {
+// PUT to update a thought by its _id
+router.put('/:id', async (req, res) => {
   try {
     const thought = await Thought.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     });
     if (!thought) {
-      return res.status(404).json({ message: "Thought not found" });
+      return res.status(404).json({ message: 'Thought not found' });
     }
     res.json(thought);
   } catch (err) {
@@ -58,11 +57,11 @@ router.put("/update/thought/:id", async (req, res) => {
 });
 
 // DELETE to remove a thought by its _id
-router.delete("/delete/thought/:id", async (req, res) => {
+router.delete('/:id', async (req, res) => {
   try {
     const thought = await Thought.findByIdAndDelete(req.params.id);
     if (!thought) {
-      return res.status(404).json({ message: "Thought not found" });
+      return res.status(404).json({ message: 'Thought not found' });
     }
     await User.findByIdAndUpdate(
       thought.userId,
@@ -76,11 +75,11 @@ router.delete("/delete/thought/:id", async (req, res) => {
 });
 
 // POST to create a reaction for a thought
-router.post("/:thoughtId/reactions", async (req, res) => {
+router.post('/:thoughtId/reactions', async (req, res) => {
   try {
     const thought = await Thought.findById(req.params.thoughtId);
     if (!thought) {
-      return res.status(404).json({ message: "Thought not found" });
+      return res.status(404).json({ message: 'Thought not found' });
     }
     const reaction = {
       reactionBody: req.body.reactionBody,
@@ -95,7 +94,7 @@ router.post("/:thoughtId/reactions", async (req, res) => {
 });
 
 // DELETE to remove a reaction from a thought
-router.delete("/:thoughtId/reactions/:reactionId", async (req, res) => {
+router.delete('/:thoughtId/reactions/:reactionId', async (req, res) => {
   try {
     const { thoughtId, reactionId } = req.params;
     const thought = await Thought.findByIdAndUpdate(
@@ -104,7 +103,7 @@ router.delete("/:thoughtId/reactions/:reactionId", async (req, res) => {
       { new: true }
     );
     if (!thought) {
-      return res.status(404).json({ message: "Thought not found" });
+      return res.status(404).json({ message: 'Thought not found' });
     }
     res.json(thought);
   } catch (err) {
