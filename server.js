@@ -4,15 +4,14 @@ const mongoose = require('mongoose');
 const app = express();
 const PORT = process.env.PORT || 3333;
 
-// connect to mongoDB
+// Connect to MongoDB
 mongoose.connect('mongodb://localhost/social_network', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
 });
 
 mongoose.connection.on('connected', () => {
-    console.log('connected to mongoDB');
+  console.log('Connected to MongoDB');
 });
 
 // Middleware
@@ -26,8 +25,7 @@ app.use('/api/users', userRoutes);
 const thoughtRoutes = require('./routes/thoughtRoutes');
 app.use('/api/thoughts', thoughtRoutes);
 
-
 // Start the server
 app.listen(PORT, () => {
-    console.log(`Server started on port ${PORT}`);
+  console.log(`Server started on port ${PORT}`);
 });
