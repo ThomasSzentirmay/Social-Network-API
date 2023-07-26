@@ -1,18 +1,12 @@
 const express = require('express');
 const mongoose = require('mongoose');
-
 const app = express();
 const PORT = process.env.PORT || 3333;
+require('dotenv').config();
 
-// Connect to MongoDB
-mongoose.connect('mongodb://localhost/social_network', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
 
-mongoose.connection.on('connected', () => {
-  console.log('Connected to MongoDB');
-});
+const connectDB = require('./config/db');
+connectDB();
 
 // Middleware
 app.use(express.json());
