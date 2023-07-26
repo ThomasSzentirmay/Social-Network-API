@@ -4,7 +4,7 @@ const { User, Thought } = require("../models");
 const router = express.Router();
 
 // get all thoughts
-router.get("/", async (req, res) => {
+router.get("/thoughts", async (req, res) => {
   try {
     const thoughts = await Thought.find().populate("reactions");
     res.json(thoughts);
@@ -14,7 +14,7 @@ router.get("/", async (req, res) => {
 });
 
 // get a single thought by its _id
-router.get("/:id", async (req, res) => {
+router.get("/thoughts/:id", async (req, res) => {
   try {
     const thought = await Thought.findById(req.params.id).populate("reactions");
     if (!thought) {
@@ -27,7 +27,7 @@ router.get("/:id", async (req, res) => {
 });
 
 // post to create a new thought
-router.post("/", async (req, res) => {
+router.post("/create", async (req, res) => {
   try {
     const thought = await Thought.create(req.body);
     await User.findByIdAndUpdate(
@@ -42,7 +42,7 @@ router.post("/", async (req, res) => {
 });
 
 // put to update a thought by its _id
-router.put("/:id", async (req, res) => {
+router.put("/update/thought/:id", async (req, res) => {
   try {
     const thought = await Thought.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
@@ -57,7 +57,7 @@ router.put("/:id", async (req, res) => {
 });
 
 // DELETE to remove a thought by its _id
-router.delete("/:id", async (req, res) => {
+router.delete("/delete/thought/:id", async (req, res) => {
   try {
     const thought = await Thought.findByIdAndDelete(req.params.id);
     if (!thought) {
