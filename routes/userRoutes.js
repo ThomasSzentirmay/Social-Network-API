@@ -7,7 +7,7 @@ const router = express.Router();
 // GET all users
 router.get('/', async (req, res) => {
   try {
-    const users = await User.find().populate('thoughts').populate('friends');
+    const users = await User.find({}).populate('thoughts').populate('friends');
     res.json(users);
   } catch (err) {
     res.status(500).json(err);
@@ -28,7 +28,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // POST to create a new user
-router.post('/', async (req, res) => {
+router.post('/user', async (req, res) => {
   try {
     const user = await User.create(req.body);
     res.json(user);
