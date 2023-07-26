@@ -68,4 +68,22 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+// post to add a new friend to a user's friend list
+router.post("/:userId/friends/:friendId", async (req, res) => {
+  try {
+    const { userId, friendId } = req.params;
+    const user = await User.findByIdAndUpdate(
+      userId,
+      { $addToSet: { friends: friendId } },
+      { new: true }
+    );
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.json(user);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 module.exports = router;
