@@ -21,6 +21,10 @@ const reactionSchema = new mongoose.Schema({
   },
 });
 
+thoughtSchema.virtual('reactionCount').get(function () {
+  return this.reactions.length;
+});
+
 const Reaction = mongoose.model("Reaction", reactionSchema);
 
 module.exports = Reaction;
