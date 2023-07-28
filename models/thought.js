@@ -1,23 +1,5 @@
 const mongoose = require('mongoose');
 
-const thoughtSchema = new mongoose.Schema({
-  thoughtText: {
-    type: String,
-    required: true,
-    maxlength: 280,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-    get: (createdAt) => new Date(createdAt).toISOString(),
-  },
-  username: {
-    type: String,
-    required: true,
-  },
-  reactions: [reactionSchema], 
-});
-
 const reactionSchema = new mongoose.Schema({
   reactionId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -37,6 +19,24 @@ const reactionSchema = new mongoose.Schema({
     default: Date.now,
     get: (createdAt) => new Date(createdAt).toISOString(),
   },
+});
+
+const thoughtSchema = new mongoose.Schema({
+  thoughtText: {
+    type: String,
+    required: true,
+    maxlength: 280,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+    get: (createdAt) => new Date(createdAt).toISOString(),
+  },
+  username: {
+    type: String,
+    required: true,
+  },
+  reactions: [reactionSchema], 
 });
 
 thoughtSchema.virtual('reactionCount').get(function () {

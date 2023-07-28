@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
-    match: /^[\w-]+@[a-zA-Z_]+\.[a-zA-Z]{2,3}$/,
+    match: /.+@.+\..+/,
   },
   thoughts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Thought' }],
   friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],

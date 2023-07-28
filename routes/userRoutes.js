@@ -33,7 +33,8 @@ router.post('/user', async (req, res) => {
     const user = await User.create(req.body);
     res.json(user);
   } catch (err) {
-    res.status(500).json(err);
+    console.error(err);
+    res.status(500).json({ message: 'Failed to create user.' });
   }
 });
 
