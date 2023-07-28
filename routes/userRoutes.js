@@ -60,9 +60,7 @@ router.delete('/:id', async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
-    // BONUS: Remove a user's associated thoughts when deleted
     await Thought.deleteMany({ userId: req.params.id });
-    // Remove the user from other users' friend lists
     await User.updateMany({ friends: req.params.id }, { $pull: { friends: req.params.id } });
     res.json(user);
   } catch (err) {
@@ -76,7 +74,7 @@ router.post('/:userId/friends/:friendId', async (req, res) => {
     const { userId, friendId } = req.params;
     const user = await User.findByIdAndUpdate(
       userId,
-      { $addToSet: { friends: friendId } }, // Use $addToSet to avoid duplicates
+      { $addToSet: { friends: friendId } },
       { new: true }
     );
     if (!user) {
